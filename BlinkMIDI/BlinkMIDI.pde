@@ -6,6 +6,11 @@
  output 13 for each beat (every 24th pulse).
  Tested with MIDI out from Renoise.
  
+ MIDI Start (0xFA) resets pulse counter.
+ 
+ This could probably be rewritten to use the MIDI lib callbacks and not to
+ busy-loop 100 % CPU all the time.
+ 
  Breadboard with MIDI IN as described on
   http://www.shaduzlabs.com/article-7.html
  
@@ -48,15 +53,14 @@ void setup() {
 
 void loop() {
   if (MIDI.read()) {
-    if (MIDI.getType() == Clock) {
-        if (++pulses == PPQN) {
+    kMIDIType type = MIDI.getType();
+    if (type == Clock && ++pulses == PPQN) {
+          pulses = 0; 
           digitalWrite(ledPin, HIGH);
-          delay(20);
-          digitalWrite(ledPin, LOW);
-          pulses = 0;
-        }
-    } else if (MIDI.getType() == Start) {
-      pulses = 0;
-    }
+    } else if (type == Start) {
+          pulses = PPQN - 1;
+    } else if (pulses == 1) {
+      digitalWrite(ledPin, LOW);       
+    } 
   }
 }
