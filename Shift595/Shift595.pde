@@ -5,6 +5,11 @@
  
  Set up is like http://www.arduino.cc/en/Tutorial/ShiftOut, but
  only 4 LEDs because I'm too lazy to connect more at the moment.
+ 
+ Just for fun using the built-in shiftOut function, although it
+ insists on shifting out 8 bits so it is a bit wasteful. Earlier
+ versions of this sketch had its own shiftBit function to not
+ send more than the 4 needed bits.
 */
 
 const int dataPin = 11;
@@ -19,19 +24,9 @@ void setup() {
   pinMode(ledPin, OUTPUT);
 }
 
-void shiftBit(boolean data) {
-    digitalWrite(clockPin, LOW);
-    digitalWrite(dataPin, data);
-    digitalWrite(clockPin, HIGH);
-}
-
 void shiftLow4Bits(byte data) {
-  byte toSend = data;
   digitalWrite(latchPin, LOW);
-  for (int i = 0; i < 4; i++) {
-    shiftBit((toSend & 1));
-    toSend >>= 1;
-  }
+  shiftOut(dataPin, clockPin, LSBFIRST, (data & 0xf) << 4);
   digitalWrite(latchPin, HIGH);
 }
 
@@ -39,7 +34,7 @@ void loop() {
   shiftLow4Bits(0);
   delay(500);
   for (int i = 0; i < 4; i++) {
-    shiftLow4Bits(1 << i);
+    shiftLow4Bits( 1 << i);
     delay(250);
   }
   for (int i = 0; i < 16; i++) {
