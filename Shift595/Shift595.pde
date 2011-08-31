@@ -19,7 +19,7 @@ void setup() {
   pinMode(ledPin, OUTPUT);
 }
 
-void shiftBit(unsigned char data) {
+void shiftBit(boolean data) {
     digitalWrite(clockPin, LOW);
     digitalWrite(dataPin, data);
     digitalWrite(clockPin, HIGH);
