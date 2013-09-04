@@ -13,17 +13,11 @@
  * along with DogLcd.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Copyright 2010 Eberhard Fahle <e.fahle@wayoda.org>
- *
- * Minor changes to make it compile with Arduino 1.0.3
- * * Changed include WProgram.h to Arduino.h.
- * * Changed return type of write from void to size_t.
- * Copyright 2013 Pelle Nilsson
  */
 #ifndef DOG_LCD_h
 #define DOG_LCD_h
 
 #include <inttypes.h>
-#include "Arduino.h"
 #include "Print.h"
 
 /** Define the available models */
@@ -231,15 +225,38 @@ class DogLcd : public Print {
      * the cursor stays where it is.
      */
     void setCursor(int col, int row); 
-    
+
+    /*
+       Using namespace Print::write makes it possible to 
+       to send data to the Lcd via the lcd.write(const char *) or
+       a lcd.write(const uint8_t *,int) methods.
+    */
+    using Print::write;    
+
+#if ARDUINO >= 100
+    //The Print::write() signatuire was changed with Arduino versions >= 1.0
+
+    /**
+     * Implements the write()-method from the base-class that
+     * is called whenever a character is to be printed to the
+     * display. 
+     * @param c the character to be printed. 
+     * @return int number of characters written
+     */ 
+     virtual size_t write(uint8_t c) { writeChar(c); return 1; }
+
+#else
+    //This keeps the library compatible with pre-1.0 versions of the Arduino core
+
     /**
      * Implements the write()-method from the base-class that
      * is called whenever a character is to be printed to the
      * display. 
      * @param c the character to be printed. 
      */ 
-    virtual size_t write(uint8_t c);
-    
+    virtual void write(uint8_t c) { writeChar(c); }
+#endif
+
     /**
      * Set the backlight. This is obviously only possible
      * if you have build a small circuit for switching/dimming the 

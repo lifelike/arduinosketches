@@ -14,7 +14,9 @@
   * For the "Pong" display" the CSB pin is connected to pin 6
   * For boths displays the RESET pin is not used (connected to +5V)
   * For boths displays the Backlight switching is not used
-  *  http://code.google.com/p/doglcd/wiki/Code
+
+  Library homepage : http://code.google.com/p/doglcd/
+
 */
 
 // include the library code:

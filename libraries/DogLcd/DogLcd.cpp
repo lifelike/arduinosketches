@@ -13,17 +13,18 @@
  * along with DogLcd.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Copyright 2010 Eberhard Fahle <e.fahle@wayoda.org>
- *
- * Minor changes to make it compile with Arduino 1.0.3
- * * Changed return type of write from void to size_t.
- * Copyright 2013 Pelle Nilsson
-
  */
 #include "DogLcd.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
+
+#if (ARDUINO >= 100)
+#include <Arduino.h>
+#else
+#include <WProgram.h>
+#endif
 
 DogLcd::DogLcd(int lcdSI, int lcdCLK, int lcdRS, int lcdCSB, int lcdRESET, int backLight) {
     this->lcdSI=lcdSI;
@@ -243,34 +244,6 @@ void DogLcd::noAutoscroll(void) {
     writeCommand(entryMode,30);
 }
 
-// void DogLcd::createChar(int charPos, uint8_t charMap[]) {
-//     int baseAddress;
-//     if(charPos<0 || charPos>7)
-// 	return;
-//     baseAddress=charPos*8;
-//     for (int i=0; i<8; i++) {
-// 	writeCommand(0x30,30);
-//     	writeCommand((0x40|(baseAddress+i)),30);
-// 	writeChar(charMap[i]);
-//     }
-//     /*
-//       The numner of lines onn the display belong to the 'Function Set'.
-//       We have to restore this withn different value for each model
-//     */
-//     if(model==DOG_LCD_M081) {
-// 	//8-bit,1-line,switch to instruction set 0
-// 	writeCommand(0x30,30);
-//     }
-//     else if(model==DOG_LCD_M162) {
-// 	//8-bit,2-line,switch to instruction set 0
-// 	writeCommand(0x38,30);
-//     }
-//     else if(model==DOG_LCD_M163) {
-// 	//8-bit,2-line,switch to instruction set 0
-// 	writeCommand(0x38,30);
-//     }
-// }
-
  void DogLcd::createChar(int charPos, uint8_t charMap[]) {
      int baseAddress;
      if(charPos<0 || charPos>7)
@@ -279,20 +252,11 @@ void DogLcd::noAutoscroll(void) {
      //changing CGRAM address belongs to different instruction set
 	 setInstructionSet(0);
      for (int i=0; i<8; i++) {
-	 // 	writeCommand(0x30,30);
-	 // 	//setInstructionSet(0);
 	 writeCommand((0x40|(baseAddress+i)),30);
 	 writeChar(charMap[i]);
      }
-//     /*
-//       The number of lines on the display belong to the 'Function Set'.
-//       We have to restore this with the correct settings for each model
-//     */
-//     writeCommand(0x38,30);
      setInstructionSet(0);
      writeDisplayMode();
-//     writeChar(charPos);
-
 }
 
 void DogLcd::writeDisplayMode() {
@@ -352,7 +316,3 @@ void DogLcd::spiTransfer(int value, int executionTime) {
     delayMicroseconds(executionTime);
 }
 
-size_t DogLcd::write(uint8_t c) {
-    writeChar(c);
-    return 1;
-}
