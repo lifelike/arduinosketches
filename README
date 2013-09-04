@@ -1,5 +1,21 @@
-My Arduino sketch directory, or most of it anyway. Libraries included are
-open source that may be redistributed as far as I know (see individual
-directory for license). My code is GPL v3 (unless otherwise stated in
-a source file).
+My Arduino sketch directory, or most of it anyway. My sketches are GPL v3
+unless otherwise stated in a source file.
+
+DogLcd library
+ Eberhard Fahle <e.fahle@wayoda.org> 2010
+ GPL v3
+
+MIDI library
+ Francois Best, Forty Seven Effects 2011
+ GPL
+
+TM1638 library
+ Ricardo Batista
+ GPL v3
+
+ Also see individual library directories for source code and more info.
+ There are probably newer versions available elsewhere anyway. I just
+ keep copies in here to make sure I have something that my own sketches
+ compiles with.
+
 
