@@ -13,12 +13,17 @@
  * along with DogLcd.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Copyright 2010 Eberhard Fahle <e.fahle@wayoda.org>
+ *
+ * Minor changes to make it compile with Arduino 1.0.3
+ * * Changed include WProgram.h to Arduino.h.
+ * * Changed return type of write from void to size_t.
+ * Copyright 2013 Pelle Nilsson
  */
 #ifndef DOG_LCD_h
 #define DOG_LCD_h
 
 #include <inttypes.h>
-#include "WProgram.h"
+#include "Arduino.h"
 #include "Print.h"
 
 /** Define the available models */
@@ -233,7 +238,7 @@ class DogLcd : public Print {
      * display. 
      * @param c the character to be printed. 
      */ 
-    virtual void write(uint8_t c);
+    virtual size_t write(uint8_t c);
     
     /**
      * Set the backlight. This is obviously only possible

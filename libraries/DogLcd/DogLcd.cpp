@@ -13,6 +13,11 @@
  * along with DogLcd.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Copyright 2010 Eberhard Fahle <e.fahle@wayoda.org>
+ *
+ * Minor changes to make it compile with Arduino 1.0.3
+ * * Changed return type of write from void to size_t.
+ * Copyright 2013 Pelle Nilsson
+
  */
 #include "DogLcd.h"
 
@@ -347,6 +352,7 @@ void DogLcd::spiTransfer(int value, int executionTime) {
     delayMicroseconds(executionTime);
 }
 
-void DogLcd::write(uint8_t c) {
+size_t DogLcd::write(uint8_t c) {
     writeChar(c);
+    return 1;
 }

@@ -14,6 +14,7 @@
  * LCD RESET pin is not used
  * LCD Backlight pin is not used
  
+ http://code.google.com/p/doglcd/wiki/Hardware
  http://www.arduino.cc/en/Tutorial/LiquidCrystal
  */
 
