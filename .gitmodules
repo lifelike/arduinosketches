@@ -1,0 +1,3 @@
+[submodule "external/attiny"]
+	path = external/attiny
+	url = https://github.com/damellis/attiny.git
